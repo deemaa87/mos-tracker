@@ -99,51 +99,27 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		}
 	  }
 
-      function play(obj) {
+      function play(obj, incValue) {
         var row = obj.closest("tr");
-        var element = getElementHavingAttribute(row, "TD", ATTR_DATA_TIER);
-        if (element != null) {
-          var currentTier = element.getAttribute(ATTR_DATA_TIER);
-          if (currentTier == "") {
-            currentTier = 0;
-          }
-          if (currentTier == null) {
-            currenTier = 0;
-          } else {
-            currentTier = parseInt(currentTier, 10);
-          }
-          currentTier = currentTier + 1;
-          if (currentTier > 3) {
-            currentTier = 1;
-          }
-          
-		  setTier(obj, currentTier);
-		  
-        }
-		element = getElementHavingAttribute(row, "TD", ATTR_DATA_RACES);
+		var element = getElementHavingAttribute(row, "TD", ATTR_DATA_RACES);
 		if (element != null) {
-			var races = element.getAttribute(ATTR_DATA_RACES);
+		    var races = element.getAttribute(ATTR_DATA_RACES);
 			if (races == null || races == "") {
 				races = 0;
 			} else {
 				races = parseInt(races, 10);
 			}
 			
-			console.log("races = " + races);
-			if (races != NaN) {
-				races++;
-				element.setAttribute(ATTR_DATA_RACES, races);
-				element.innerHTML = races;
+			if (!Number.isNaN(races)) {
+				races = races + incValue;
+				if (races < 0) {
+					races = 0;
+				}
+				setRacesByValue(obj, races);
 			}
 			
 		}
 		
-        element = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
-        if (element != null) {
-          const currentTimestamp = Date.now() / 1000;
-          element.setAttribute(ATTR_DATA_LP, currentTimestamp);
-          element.innerHTML = "0:00:00";
-        }
       }
 	  
 	  function resetRaces(obj) {
@@ -206,7 +182,13 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		  if (event.keyCode >= 49 && event.keyCode <= 57) {
 		    var index = event.keyCode - 48;
 			console.log("shortcut increase pressed (1-9): " + index );
-            playViaKB(index);						
+			if (event.shiftKey) {
+			    console.log("shift held");
+				playViaKB(index, -1);						
+			} else {
+			   playViaKB(index, 1);						
+			}
+
 
 		  }
 		};
@@ -292,7 +274,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
 	  }
 
-	  function playViaKB(hkIndex) {
+	  function playViaKB(hkIndex, incValue) {
 		var table = document.getElementById("tracker");
 		var rows = Array.from(table.querySelectorAll("tr"));
 	    
@@ -301,7 +283,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		    var index = parseInt(childElement.getAttribute(ATTR_DATA_TR_INDEX), 10);
 			if (!Number.isNaN(index)) { 
 				if (index === hkIndex) {
-					play(childElement);
+					play(childElement, incValue);
 					return;
 				}
 			}
@@ -351,7 +333,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td class="bold" style="font-size: 1.4em;"></td>
         </tr>
         <tr style="display: none" id="trTemplate">
-          <td data-streamer="dummy" class="clickable bold" onClick="play(this)"></td>
+          <td data-streamer="dummy" class="clickable bold" onClick="play(this,1)"></td>
           <td data-tier="3" class="right"></td>
 		  <td data-races="0" class="right clickable" onClick="setRaces(this)">0</td>
           <td data-lp="" class="right"></td>
