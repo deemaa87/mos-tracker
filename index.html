@@ -141,6 +141,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	  
 	  function resetRaces(obj) {
 		setRacesByValue(obj, 0);
+		rewriteUrl();
 	  }
 
       function resetTime(obj) {
@@ -226,6 +227,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       function remove(obj) {
         obj.closest("tr").remove();
+		rewriteUrl();
       }
 
 	  function setRacesByValue(obj, races) {
@@ -266,12 +268,14 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			}
 			
 			setRacesByValue(obj, races);
+			rewriteUrl();
 
 	  }
 
       function addStreamer() {
         const name = prompt('Streamer Name:');
         addStreamerByName(name, 0);
+		rewriteUrl();
       }
 
       function addStreamerByName(name, races) {
