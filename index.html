@@ -313,7 +313,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			var streamer = getElementHavingAttribute(childElement, "TD", ATTR_DATA_STREAMER).innerHTML;
 		
 			if (!first) {
-			   newStreamers += "&";
+			   newStreamers += ",";
 			}
 			
 			
@@ -328,8 +328,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
         }
 
-			 var currentURL = new URL(window.location.href);
-	
+		  var currentURL = new URL(window.location.href);
 		  var newURL = currentURL.origin + currentURL.pathname + '?streamers=' + newStreamers;
 		  history.replaceState(null, '', newURL);
 
