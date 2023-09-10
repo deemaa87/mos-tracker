@@ -18,6 +18,19 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		background-color: #edede8;
 	  }
 
+      div.help {
+		    width: 30px;
+			height: 30px;
+			background-color: #000093;
+			border-radius: 50%; 
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 24px; 
+			color: #B0E0E6; 
+	    
+	  }
+
 	  table {
         border-collapse: separate;
         border-spacing: 0 6px;
@@ -43,9 +56,16 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         border-bottom: 2px solid #505050;
       }
 	  
-	  td.right {
+	  .right {
 		text-align: right;
 	  }
+
+
+	.right2 {
+		display: flex;
+		justify-content: flex-end; /* Align content to the right */
+		align-items: center; /* Vertically center content */
+	}
 
       td:first-child {
         padding-left: 10px;
@@ -61,7 +81,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         font-weight: bold;
       }
 
-	  td.clickable {
+	  .clickable {
 	    cursor: pointer;
         user-select: none;
 
@@ -399,6 +419,12 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		setTableIndexes();
         dirtyTable = false;
       }
+	  
+	  function help() {
+		alert("Click on the streamer name to increase race count\n(hold down shift while clicking to decrease)\n\nClick on the race number to manually set the race count\n\nClick on the plus sign in the header to add a streamer\n\nKey 1-9 can be used act the same as a click on a streamer name\n(for the first 9 rows)\n\nAdd ?streamer=  and then a list of streamer names in the address to auto populate the list\n(separated by comma)");
+	  
+	  }
+	  
     </script>
   </head>
   <body onLoad="init()">
@@ -410,7 +436,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td width="35px" class="bold right" style="font-size: 1.4em;">Tier</td>
 		  <td width="55px" class="bold right" style="font-size: 1.4em;">Races</td>
           <td width="210px" class="bold right" style="font-size: 1.4em;">Play Timer</td>
-          <td class="bold" style="font-size: 1.4em;"></td>
+          <td class="bold"><span class="right2"><span><div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></span></td>
         </tr>
         <tr style="display: none" id="trTemplate">
           <td data-streamer="dummy" class="clickable bold" onClick="playClick(this)"></td>
