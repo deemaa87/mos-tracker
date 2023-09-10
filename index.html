@@ -328,21 +328,22 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
         }
 
-		var currentURL = new URL(window.location.href);
+			var currentURL = new URL(window.location.href);
 		  var baseURL = currentURL.origin + currentURL.pathname; // Extract base URL
 		  var queryString = '';
 
 		  // Build the query string
 		  currentURL.searchParams.forEach(function (value, key) {
-			if (key === 'streamers') {
-			  queryString += 'streamers=' + newStreamers + '&';
-			} else {
+			if (key !== 'streamers') {
 			  queryString += key + '=' + value + '&';
 			}
 		  });
 
+		  // Add the new 'streamers' parameter in comma-separated format
+		  queryString += 'streamers=' + newStreamers.split(',').join(',');
+
 		  // Remove the trailing '&' and update the URL
-		  queryString = queryString.slice(0, -1);
+		  queryString = queryString.replace(/&$/, ''); // Remove trailing '&'
 		  var newURL = baseURL + '?' + queryString;
 		  history.pushState(null, '', newURL);
 
