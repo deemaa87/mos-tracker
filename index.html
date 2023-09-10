@@ -304,39 +304,22 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			
 		var first = true;	
 
-		const startUrl = window.location.href;
-		//const baseURL = startUrl.split("?")[0] + "?streamers=";
 		
-
-		const parsedUrl = new URL(startUrl);
-
-		console.log(parsedUrl);
-
-		const host = parsedUrl.host;
-		const pathname = parsedUrl.pathname;
-		const search = parsedUrl.search;
-
-		const baseURL = pathname+"?streamers=";
-		console.log("baseURL = " + baseURL);
-
+		var newStreamers = "";
 			
         for (const childElement of rows) {
           if (childElement.tagName === "TR" && childElement.hasAttribute(ATTR_DATA_TR_INDEX)) {
 			var races = parseInt(getElementHavingAttribute(childElement, "TD", ATTR_DATA_RACES).getAttribute(ATTR_DATA_RACES), 10);
 			var streamer = getElementHavingAttribute(childElement, "TD", ATTR_DATA_STREAMER).innerHTML;
-			
-			if (url == "") {
-			   url = baseURL;
-			}
-			
+		
 			if (!first) {
-			   url += "&";
+			   newStreamers += "&";
 			}
 			
 			
-			url += streamer;
+			newStreamers += streamer;
 			if (races>0) {
-				url = url + ":" + races;
+				newStreamers = newStreamers + ":" + races;
 			}
 			
 			
@@ -344,8 +327,19 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
           }
         }
-	    console.log(url);
-		//location.assign(url);
+
+		var currentURL = window.location.href;
+		var newURL;
+		if (currentURL.includes('?streamers=')) {
+		  // If the query parameter already exists, replace it
+		  newURL = currentURL.replace(/(\?|&)streamers=([^&]*)/, '$1streamers=' + newStreamers);
+		} else {
+		  // If the query parameter doesn't exist, add it
+		  newURL = currentURL + (currentURL.includes('?') ? '&' : '?') + 'streamers=' + newStreamers;
+		}
+
+		window.location.assign(newURL);
+
 	  }
 
 	  function setTableIndexes() {
