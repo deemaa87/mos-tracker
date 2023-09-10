@@ -132,6 +132,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 					races = 0;
 				}
 				setRacesByValue(obj, races);
+				rewriteUrl();
 			}
 			
 		}
@@ -190,7 +191,9 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         if (streamers != null && streamers != "") {
           const split = streamers.split(",");
           for (var index = 0; index < split.length; index++) {
-            addStreamerByName(split[index]);
+		    const streamer = split[index];
+		    const nameSplit = streamer.split(":");
+            addStreamerByName(nameSplit[0], nameSplit.length == 2 ? nameSplit[1] : 0);
           }
         }
 		
@@ -268,10 +271,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       function addStreamer() {
         const name = prompt('Streamer Name:');
-        addStreamerByName(name);
+        addStreamerByName(name, 0);
       }
 
-      function addStreamerByName(name) {
+      function addStreamerByName(name, races) {
         if (name != "" && name != null) {
           var trRow = document.getElementById("trTemplate");
           var row = trRow.cloneNode(true);
@@ -284,9 +287,66 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
           var table = document.getElementById("tracker");
           table.appendChild(row);
+		  if (races > 0) {
+			setRacesByValue(row, races);
+		  }
           dirtyTable = true;
         }
       }
+
+
+	  function rewriteUrl() {
+	    var table = document.getElementById("tracker");
+		var rows = Array.from(table.querySelectorAll("tr"));
+		
+			
+		var url = "";	
+			
+		var first = true;	
+
+		const startUrl = window.location.href;
+		//const baseURL = startUrl.split("?")[0] + "?streamers=";
+		
+
+		const parsedUrl = new URL(startUrl);
+
+		console.log(parsedUrl);
+
+		const host = parsedUrl.host;
+		const pathname = parsedUrl.pathname;
+		const search = parsedUrl.search;
+
+		const baseURL = pathname+"?streamers=";
+		console.log("baseURL = " + baseURL);
+
+			
+        for (const childElement of rows) {
+          if (childElement.tagName === "TR" && childElement.hasAttribute(ATTR_DATA_TR_INDEX)) {
+			var races = parseInt(getElementHavingAttribute(childElement, "TD", ATTR_DATA_RACES).getAttribute(ATTR_DATA_RACES), 10);
+			var streamer = getElementHavingAttribute(childElement, "TD", ATTR_DATA_STREAMER).innerHTML;
+			
+			if (url == "") {
+			   url = baseURL;
+			}
+			
+			if (!first) {
+			   url += "&";
+			}
+			
+			
+			url += streamer;
+			if (races>0) {
+				url = url + ":" + races;
+			}
+			
+			
+			first = false;
+
+          }
+        }
+	    console.log(url);
+		location.assign(url);
+	  }
 
 	  function setTableIndexes() {
 		// ATTR_DATA_TR_INDEX
