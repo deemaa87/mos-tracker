@@ -216,6 +216,16 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				console.log("calculatedTier = " + calculatedTier);
 				
 				element.setAttribute(ATTR_DATA_RACES, races);
+				
+				var timerElement = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
+				
+				if (races == 0) {
+					timerElement.setAttribute(ATTR_DATA_LP, "0");
+				} else {
+				    const currentTimestamp = Date.now() / 1000;
+					timerElement.setAttribute(ATTR_DATA_LP, currentTimestamp);
+				}
+				
 				element.innerHTML = races;
 				
 				setTier(obj, calculatedTier);
