@@ -1,0 +1,314 @@
+<!--
+
+Author: DeafMarbler || deemaa87 || Copyright 2023
+
+example:
+index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,ChewyIsAmongUs,TheTonyBlacks,Zagarose,BlizzardGurrl,Vibblez,Bujuxx,Cass_The_Legend,DinosaurierTV,g00mba_gg,Lottdinchen,MsDopesauce,SubMainFM,Shambugi,Thechrislive,wormmyz,TheMainDad,crazyandy86,CouchWrecked,LTDigilusion,LadyG76
+
+-->
+<html>
+  <head>
+    <link href="https://fonts.cdnfonts.com/css/calibri-light" rel="stylesheet">
+    <style>
+	  body {
+		background-color: #edede8;
+	  }
+
+	  table {
+        border-collapse: separate;
+        border-spacing: 0 6px;
+        spacing: 3px;
+        font-family: 'Calibri Light', sans-serif;
+      }
+
+      tr {
+        border-spacing: 2px;
+        font-size: 1.1em;
+      }
+
+      td {
+        padding: 7px;
+        color: #424242;
+        border-bottom: 2px solid #505050;
+      }
+	  
+	  td.right {
+		text-align: right;
+	  }
+
+      td:first-child {
+        padding-left: 10px;
+        border-radius: 5px 0 0 5px;
+      }
+
+      td:last-child {
+        border-radius: 0 5px 5px 0;
+        border-right: 2px solid #505050;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+
+	  td.clickable {
+	    cursor: pointer;
+        user-select: none;
+
+	  }
+
+      .streamerName:hover {
+      }
+    </style>
+    <script>
+      var dirtyTable = false;
+      const COMPLETED_ENERGY_CYCLE_BG = "background-color: #A3CFA7;"
+      const ONGOING_ENERGY_CYCLE_BG = "background-color: #FFE194;"
+      const ATTR_DATA_TIER = "data-tier";
+      const ATTR_DATA_LP = "data-lp";
+      const ATTR_DATA_STREAMER = "data-streamer";
+	  const ATTR_DATA_RACES = "data-races";
+
+      function getTDElementHavingAttribute(parent, attributeName) {
+        const childNodeList = parent.children;
+        for (const childElement of childNodeList) {
+          if (childElement.tagName === "TD" && childElement.getAttribute(attributeName) != null) {
+            return childElement;
+          }
+        }
+        return null;
+      }
+
+	  function setTier(obj, tier) {
+	    var row = obj.closest("tr");
+		if (row != null) {
+			var element = getTDElementHavingAttribute(row, ATTR_DATA_TIER);
+			if (element != null) {
+				if (tier == 3) {
+					element.innerHTML = "";
+					row.style = COMPLETED_ENERGY_CYCLE_BG;
+				} else {
+					element.innerHTML = tier;
+					row.style = ONGOING_ENERGY_CYCLE_BG;
+				}
+
+				element.setAttribute(ATTR_DATA_TIER, tier);
+			}
+
+		}
+	  }
+
+      function play(obj) {
+        var row = obj.closest("tr");
+        var element = getTDElementHavingAttribute(row, ATTR_DATA_TIER);
+        if (element != null) {
+          var currentTier = element.getAttribute(ATTR_DATA_TIER);
+          if (currentTier == "") {
+            currentTier = 0;
+          }
+          if (currentTier == null) {
+            currenTier = 0;
+          } else {
+            currentTier = parseInt(currentTier, 10);
+          }
+          currentTier = currentTier + 1;
+          if (currentTier > 3) {
+            currentTier = 1;
+          }
+          
+		  setTier(obj, currentTier);
+		  
+        }
+		element = getTDElementHavingAttribute(row, ATTR_DATA_RACES);
+		if (element != null) {
+			var races = element.getAttribute(ATTR_DATA_RACES);
+			if (races == null || races == "") {
+				races = 0;
+			} else {
+				races = parseInt(races, 10);
+			}
+			
+			console.log("races = " + races);
+			if (races != NaN) {
+				races++;
+				element.setAttribute(ATTR_DATA_RACES, races);
+				element.innerHTML = races;
+			}
+			
+		}
+		
+        element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+        if (element != null) {
+          const currentTimestamp = Date.now() / 1000;
+          element.setAttribute(ATTR_DATA_LP, currentTimestamp);
+          element.innerHTML = "0:00:00";
+        }
+      }
+	  
+	  function resetRaces(obj) {
+		setRacesByValue(obj, 0);
+	  }
+
+      function resetTime(obj) {
+        var row = obj.closest("tr");
+        element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+        if (element != null) {
+          element.setAttribute(ATTR_DATA_LP, "0");
+          element.innerHTML = "";
+        }
+      }
+
+      function refresh() {
+        var table = document.getElementById("tracker");
+        if (dirtyTable) {
+          console.log("sort again!");
+          sortTable();
+        }
+        for (var i = 0; i < table.rows.length; i++) {
+          var row = table.rows[i];
+          var element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+          if (element != null) {
+            var value = element.getAttribute(ATTR_DATA_LP);
+            if (value != "") {
+              var lp = parseInt(value, 10);
+              if (lp != 0) {
+                const currentTimestamp = Date.now() / 1000;
+                const diff = (currentTimestamp - lp);
+                var hours = Math.floor(diff / 3600);
+                var minutes = Math.floor((diff % 3600) / 60);
+                var seconds = Math.floor(diff % 60);
+                if (minutes < 10) {
+                  minutes = "0" + minutes;
+                }
+                if (seconds < 10) {
+                  seconds = "0" + seconds;
+                }
+                element.innerHTML = hours + ":" + minutes + ":" + seconds;
+              }
+            }
+          }
+        }
+      }
+
+      function init() {
+		
+        const params = new URLSearchParams(window.location.search);
+        const streamers = params.get('streamers');
+        if (streamers != null && streamers != "") {
+          const split = streamers.split(",");
+          for (var index = 0; index < split.length; index++) {
+            addStreamerByName(split[index]);
+          }
+        }
+        sortTable(); // force a sort right away
+        setInterval(refresh, 200);
+      }
+
+      function remove(obj) {
+        obj.closest("tr").remove();
+      }
+
+	  function setRacesByValue(obj, races) {
+		var row = obj.closest("tr");
+		if (row != null) {
+			var element = getTDElementHavingAttribute(row, ATTR_DATA_RACES);
+			if (element != null) {
+				var calculatedTier = Math.floor(races % 3);
+				if (calculatedTier == 0) {
+					calculatedTier = 3;
+				}
+				
+				console.log("calculatedTier = " + calculatedTier);
+				
+				element.setAttribute(ATTR_DATA_RACES, races);
+				element.innerHTML = races;
+				
+				setTier(obj, calculatedTier);
+			}
+			
+		} 
+			
+	  }
+
+      function setRaces(obj) {
+	  		const inpRaces = prompt("Current races:");
+			var races = parseInt(inpRaces, 10);
+			if (Number.isNaN(races) || races < 0) {
+				return;
+			}
+			
+			setRacesByValue(obj, races);
+
+	  }
+
+      function addStreamer() {
+        const name = prompt('Streamer Name:');
+        addStreamerByName(name);
+      }
+
+      function addStreamerByName(name) {
+        if (name != "" && name != null) {
+          var trRow = document.getElementById("trTemplate");
+          var row = trRow.cloneNode(true);
+          row.removeAttribute("id");
+          row.style = COMPLETED_ENERGY_CYCLE_BG;
+          var element = getTDElementHavingAttribute(row, ATTR_DATA_STREAMER);
+          if (element != null) {
+            element.innerHTML = name;
+          }
+          var table = document.getElementById("tracker");
+          table.appendChild(row);
+          dirtyTable = true;
+        }
+      }
+
+      function sortTable() {
+        var table = document.getElementById("tracker");
+        var trHead = document.getElementById("trHead");
+        trHead.remove();
+        var rows = Array.from(table.querySelectorAll("tr"));
+        // Sort all rows based on the content of the first cell
+        rows.sort(function(a, b) {
+          var aValue = a.cells[0].textContent.toLowerCase();
+          var bValue = b.cells[0].textContent.toLowerCase();
+          return aValue.localeCompare(bValue);
+        });
+        // Clear the table
+        while (table.firstChild) {
+          table.removeChild(table.firstChild);
+        }
+        table.appendChild(trHead);
+        // Reinsert the sorted rows
+        rows.forEach(function(row) {
+          table.appendChild(row);
+        });
+        dirtyTable = false;
+      }
+    </script>
+  </head>
+  <body onLoad="init()">
+    <center>
+      <table width="800px" id="tracker">
+        <tr id="trHead" style="background-color: #fafafa;">
+          <td width="160px" class="bold" style="font-size: 1.4em;">Streamer <button onClick="addStreamer()">+</button>
+          </td>
+          <td width="35px" class="bold right" style="font-size: 1.4em;">Tier</td>
+		  <td width="55px" class="bold right" style="font-size: 1.4em;">Races</td>
+          <td width="230px" class="bold right" style="font-size: 1.4em;">Time since last click</td>
+          <td class="bold" style="font-size: 1.4em;"></td>
+        </tr>
+        <tr style="display: none" id="trTemplate">
+          <td data-streamer="dummy" class="clickable bold" onClick="play(this)"></td>
+          <td data-tier="3" class="right"></td>
+		  <td data-races="0" class="right" onClick="setRaces(this)">0</td>
+          <td data-lp="" class="right"></td>
+          <td class="right">
+            <button onClick="resetTime(this)">reset time</button>
+			<button onClick="resetRaces(this)">reset races</button>
+            <button style="margin-left: 8px" onClick="remove(this)">x</button>
+          </td>
+        </tr>
+      </table>
+    </center>
+	
+  </body>
+</html>
