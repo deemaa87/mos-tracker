@@ -328,18 +328,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
         }
 
-		var currentURL = window.location.href;
-		var newURL;
-		if (currentURL.includes('?streamers=')) {
-		  // If the query parameter already exists, replace it
-		  newURL = currentURL.replace(/(\?|&)streamers=([^&]*)/, '$1streamers=' + newStreamers);
-		} else {
-		  // If the query parameter doesn't exist, add it
-		  newURL = currentURL + (currentURL.includes('?') ? '&' : '?') + 'streamers=' + newStreamers;
-		}
-
-		// Use the History API to update the URL without reloading the page
-		history.pushState(null, '', newURL);
+		var currentURL = new URL(window.location.href);
+		var baseURL = currentURL.origin + currentURL.pathname; // Extract base URL
+		currentURL.searchParams.set('streamers', newStreamers);
+		history.pushState(null, '', currentURL.href);
 
 	  }
 
