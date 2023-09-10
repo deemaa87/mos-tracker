@@ -328,24 +328,23 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
         }
 
-			var currentURL = new URL(window.location.href);
-		  var baseURL = currentURL.origin + currentURL.pathname; // Extract base URL
-		  var queryString = '';
+			  var currentURL = new URL(window.location.href);
+			  var queryString = '';
 
-		  // Build the query string
-		  currentURL.searchParams.forEach(function (value, key) {
-			if (key !== 'streamers') {
-			  queryString += key + '=' + value + '&';
-			}
-		  });
+			  // Build the query string
+			  currentURL.searchParams.forEach(function (value, key) {
+				if (key !== 'streamers') {
+				  queryString += key + '=' + value + '&';
+				}
+			  });
 
-		  // Add the new 'streamers' parameter in comma-separated format
-		  queryString += 'streamers=' + newStreamers.split(',').join(',');
+			  // Add the new 'streamers' parameter in comma-separated format
+			  queryString += 'streamers=' + newStreamers;
 
-		  // Remove the trailing '&' and update the URL
-		  queryString = queryString.replace(/&$/, ''); // Remove trailing '&'
-		  var newURL = baseURL + '?' + queryString;
-		  history.pushState(null, '', newURL);
+			  // Remove the trailing '&' and update the URL without causing a page reload
+			  queryString = queryString.replace(/&$/, '');
+			  var newURL = currentURL.origin + currentURL.pathname + '?' + queryString;
+			  history.replaceState(null, '', newURL);
 
 	  }
 
