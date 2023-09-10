@@ -338,7 +338,8 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		  newURL = currentURL + (currentURL.includes('?') ? '&' : '?') + 'streamers=' + newStreamers;
 		}
 
-		window.location.assign(newURL);
+		// Use the History API to update the URL without reloading the page
+		history.pushState(null, '', newURL);
 
 	  }
 
