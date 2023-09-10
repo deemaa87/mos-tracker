@@ -61,6 +61,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
     </style>
     <script>
       var dirtyTable = false;
+	  var shiftKey = false;
       const COMPLETED_ENERGY_CYCLE_BG = "background-color: #A3CFA7;"
       const ONGOING_ENERGY_CYCLE_BG = "background-color: #FFE194;"
       const ATTR_DATA_TIER = "data-tier";
@@ -97,6 +98,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			}
 
 		}
+	  }
+
+	  function playClick(obj) {
+	     play(obj, shiftKey ? -1 : 1);
 	  }
 
       function play(obj, incValue) {
@@ -178,12 +183,12 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           }
         }
 		
-		const onEnter = (event) => {
+		const onKeyUp = (event) => {
+		  shiftKey = event.shiftKey;
 		  if (event.keyCode >= 49 && event.keyCode <= 57) {
 		    var index = event.keyCode - 48;
 			console.log("shortcut increase pressed (1-9): " + index );
 			if (event.shiftKey) {
-			    console.log("shift held");
 				playViaKB(index, -1);						
 			} else {
 			   playViaKB(index, 1);						
@@ -193,7 +198,13 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		  }
 		};
 
-		document.addEventListener("keyup", onEnter);
+		const onKeyDown = (event) => {
+		  shiftKey = event.shiftKey;
+		};
+
+
+		document.addEventListener("keyup", onKeyUp);
+		document.addEventListener("keydown", onKeyDown);
 		
         sortTable(); // force a sort right away
         setInterval(refresh, 200);
@@ -212,8 +223,6 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				if (calculatedTier == 0) {
 					calculatedTier = 3;
 				}
-				
-				console.log("calculatedTier = " + calculatedTier);
 				
 				element.setAttribute(ATTR_DATA_RACES, races);
 				
@@ -343,7 +352,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td class="bold" style="font-size: 1.4em;"></td>
         </tr>
         <tr style="display: none" id="trTemplate">
-          <td data-streamer="dummy" class="clickable bold" onClick="play(this,1)"></td>
+          <td data-streamer="dummy" class="clickable bold" onClick="playClick(this)"></td>
           <td data-tier="3" class="right"></td>
 		  <td data-races="0" class="right clickable" onClick="setRaces(this)">0</td>
           <td data-lp="" class="right"></td>
