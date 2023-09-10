@@ -67,11 +67,13 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
       const ATTR_DATA_LP = "data-lp";
       const ATTR_DATA_STREAMER = "data-streamer";
 	  const ATTR_DATA_RACES = "data-races";
+	  const ATTR_DATA_TR_INDEX = "data-tr-index";
 
-      function getTDElementHavingAttribute(parent, attributeName) {
+
+      function getElementHavingAttribute(parent, tagName, attributeName) {
         const childNodeList = parent.children;
         for (const childElement of childNodeList) {
-          if (childElement.tagName === "TD" && childElement.getAttribute(attributeName) != null) {
+          if (childElement.tagName === tagName && childElement.getAttribute(attributeName) != null) {
             return childElement;
           }
         }
@@ -81,7 +83,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	  function setTier(obj, tier) {
 	    var row = obj.closest("tr");
 		if (row != null) {
-			var element = getTDElementHavingAttribute(row, ATTR_DATA_TIER);
+			var element = getElementHavingAttribute(row, "TD", ATTR_DATA_TIER);
 			if (element != null) {
 				if (tier == 3) {
 					element.innerHTML = "";
@@ -99,7 +101,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       function play(obj) {
         var row = obj.closest("tr");
-        var element = getTDElementHavingAttribute(row, ATTR_DATA_TIER);
+        var element = getElementHavingAttribute(row, "TD", ATTR_DATA_TIER);
         if (element != null) {
           var currentTier = element.getAttribute(ATTR_DATA_TIER);
           if (currentTier == "") {
@@ -118,7 +120,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		  setTier(obj, currentTier);
 		  
         }
-		element = getTDElementHavingAttribute(row, ATTR_DATA_RACES);
+		element = getElementHavingAttribute(row, "TD", ATTR_DATA_RACES);
 		if (element != null) {
 			var races = element.getAttribute(ATTR_DATA_RACES);
 			if (races == null || races == "") {
@@ -136,7 +138,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			
 		}
 		
-        element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+        element = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
         if (element != null) {
           const currentTimestamp = Date.now() / 1000;
           element.setAttribute(ATTR_DATA_LP, currentTimestamp);
@@ -150,7 +152,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       function resetTime(obj) {
         var row = obj.closest("tr");
-        element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+        element = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
         if (element != null) {
           element.setAttribute(ATTR_DATA_LP, "0");
           element.innerHTML = "";
@@ -165,7 +167,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         }
         for (var i = 0; i < table.rows.length; i++) {
           var row = table.rows[i];
-          var element = getTDElementHavingAttribute(row, ATTR_DATA_LP);
+          var element = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
           if (element != null) {
             var value = element.getAttribute(ATTR_DATA_LP);
             if (value != "") {
@@ -199,6 +201,18 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
             addStreamerByName(split[index]);
           }
         }
+		
+		const onEnter = (event) => {
+		  if (event.keyCode >= 49 && event.keyCode <= 57) {
+		    var index = event.keyCode - 48;
+			console.log("shortcut increase pressed (1-9): " + index );
+            playViaKB(index);						
+
+		  }
+		};
+
+		document.addEventListener("keyup", onEnter);
+		
         sortTable(); // force a sort right away
         setInterval(refresh, 200);
       }
@@ -210,7 +224,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	  function setRacesByValue(obj, races) {
 		var row = obj.closest("tr");
 		if (row != null) {
-			var element = getTDElementHavingAttribute(row, ATTR_DATA_RACES);
+			var element = getElementHavingAttribute(row, "TD", ATTR_DATA_RACES);
 			if (element != null) {
 				var calculatedTier = Math.floor(races % 3);
 				if (calculatedTier == 0) {
@@ -249,9 +263,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         if (name != "" && name != null) {
           var trRow = document.getElementById("trTemplate");
           var row = trRow.cloneNode(true);
+		  row.setAttribute(ATTR_DATA_TR_INDEX, "");
           row.removeAttribute("id");
           row.style = COMPLETED_ENERGY_CYCLE_BG;
-          var element = getTDElementHavingAttribute(row, ATTR_DATA_STREAMER);
+          var element = getElementHavingAttribute(row, "TD", ATTR_DATA_STREAMER);
           if (element != null) {
             element.innerHTML = name;
           }
@@ -260,6 +275,44 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           dirtyTable = true;
         }
       }
+
+	  function setTableIndexes() {
+		// ATTR_DATA_TR_INDEX
+		var table = document.getElementById("tracker");
+		var rows = Array.from(table.querySelectorAll("tr"));
+		
+		var index = 1;
+        for (const childElement of rows) {
+          if (childElement.tagName === "TR" && childElement.hasAttribute(ATTR_DATA_TR_INDEX)) {
+			childElement.setAttribute(ATTR_DATA_TR_INDEX, index);
+			index++;
+          }
+        }
+
+
+	  }
+
+	  function playViaKB(hkIndex) {
+		var table = document.getElementById("tracker");
+		var rows = Array.from(table.querySelectorAll("tr"));
+	    
+        for (const childElement of rows) {
+          if (childElement.tagName === "TR" && childElement.hasAttribute(ATTR_DATA_TR_INDEX)) {
+		    var index = parseInt(childElement.getAttribute(ATTR_DATA_TR_INDEX), 10);
+			if (!Number.isNaN(index)) { 
+				if (index === hkIndex) {
+					play(childElement);
+					return;
+				}
+			}
+			
+			
+            index++;
+          }
+        }
+	  
+	  }
+
 
       function sortTable() {
         var table = document.getElementById("tracker");
@@ -281,6 +334,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         rows.forEach(function(row) {
           table.appendChild(row);
         });
+		setTableIndexes();
         dirtyTable = false;
       }
     </script>
