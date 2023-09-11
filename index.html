@@ -10,12 +10,43 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
   <head>
   <!--
     <link href="https://fonts.cdnfonts.com/css/calibri-light" rel="stylesheet">
+	-->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900" rel="stylesheet">
-    -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,900" rel="stylesheet">
 	<style>
 	  body {
 		background-color: #edede8;
+	  }
+
+	div.helpContent {
+		color: #f7f7f7; 
+		font-size: 1.0em;
+		font-family: 'Roboto', sans-serif;
+				text-shadow: 1px 1px 0 #303030;
+
+	}
+
+	div.helpLastRow {
+		 display: flex;
+		justify-content: space-between;
+
+	}
+
+	  div.helpContainer {
+			position: absolute;
+			display: none;
+	        width: 500px;
+			height: 460px;
+			background-color: #778899;
+		
+			border-radius: 20px; 
+			border-left: 6px solid #cacaca;
+			border-top: 6px solid #cacaca;
+			border-right: 6px solid #606060;
+			border-bottom: 6px solid #606060;
+			box-sizing: border-box;
+			
+			
 	  }
 
       div.help {
@@ -423,14 +454,55 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
         dirtyTable = false;
       }
 	  
-	  function help() {
-		alert("** This thing doesn't play the game.**\n** It doesn't automatically track the game status. **\n** It just presents the information conscience and clear. **\n** Basically a workaround for the mobile MOS app issues. **\n\nClick on the streamer name to increase race count\n(hold down shift while clicking to decrease)\n\nClick on the race number to manually set the race count\n\nClick on the plus sign in the header to add a streamer\n\nKey 1-9 can be used act the same as a click on a streamer name\n(for the first 9 rows)\n\nAdd ?streamer=  and then a list of streamer names in the address to auto populate the list\n(separated by comma)");
 	  
+	  function hideHelp() {
+		var helpContainer = document.getElementById("helpContainer");
+		helpContainer.style.display = "none";
+	  }
+	  function help() {
+		var helpContainer = document.getElementById("helpContainer");
+		var tracker = document.getElementById("tracker");
+		const { width, top, left } = tracker.getBoundingClientRect();
+
+		helpContainer.style.top = top + 65;
+		
+		helpContainer.style.width = width - 16;
+		
+		helpContainer.style.left = left + 8;
+
+		console.log(width);
+		console.log(top);
+		//alert("** This thing doesn't play the game.**\n** It doesn't automatically track the game status. **\n** It just presents the information conscience and clear. **\n** Basically a workaround for the mobile MOS app issues. **\n\nClick on the streamer name to increase race count\n(hold down shift while clicking to decrease)\n\nClick on the race number to manually set the race count\n\nClick on the plus sign in the header to add a streamer\n\nKey 1-9 can be used act the same as a click on a streamer name\n(for the first 9 rows)\n\nAdd ?streamer=  and then a list of streamer names in the address to auto populate the list\n(separated by comma)");
+		helpContainer.style.display = 'block';
 	  }
 	  
     </script>
   </head>
   <body onLoad="init()">
+			<div id="helpContainer" class="helpContainer">
+				<div class="helpContent" style="padding: 15px;">
+					<b>Hello Fellow Marble Enthusiast!</b><br><br>
+					This is just something to work around the shortcomings of the official mobile app.<br>
+					&#x2022; Cluttered and hard to read user interface <br>
+					&#x2022; Energy tiers that often times stop updating <br>
+					<br>
+					!Important!: This tool does <b>NOT</b> play for you, it is only an aid to keep track on how many races and at what energy tier you are at.<br><br>
+					How to use:<br>
+					&#x2022; Add a streamer by clicking on the + sign, you can also provide a list of streamers in the url (<a target="_new" href="https://deemaa87.github.io/mos-tracker/?streamers=CamWOW,OhMyGross,TheChrisLive,Zagrose,JoJoCGO,Vibblez">example</a>)<br>
+					&#x2022; Click on the number of races to manually set it (tier will be calculated)<br>
+					&#x2022; Click on the streamer name to increase the race counter (hold shift to decreaase it)<br>
+					&#x2022; Use key 1-9 to increase the corresponding row index (hold shift to decrease)<br>
+					<br><br>
+					This tool is currently not very well tested for high DSI screens and will most likely not look very good.<br>
+					It's possible to get desynched, if a streamer cancels a race then this tool will be ahead by one<br><br>
+					With this in mind, I hope you find the tool helpful.<br><br>
+					<div class="helpLastRow">
+						<div>// DeafMarbler</div><div class="right clickable" onclick="hideHelp()">close</div>
+					</div>
+					
+				</div>
+			</div>
+
     <center>
       <table width="800px" id="tracker">
         <tr id="trHead" style="background-color: #fafafa;">
@@ -439,7 +511,9 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td width="35px" class="bold right" style="font-size: 1.4em;">Tier</td>
 		  <td width="55px" class="bold right" style="font-size: 1.4em;">Races</td>
           <td width="210px" class="bold right" style="font-size: 1.4em;">Play Timer</td>
-          <td class="bold"><span class="right2"><span><div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></span></td>
+          <td class="bold"><span class="right2"><span>
+			<div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></span>
+		  </td>
         </tr>
         <tr style="display: none" id="trTemplate">
           <td data-streamer="dummy" class="clickable bold shadow" onClick="playClick(this)"></td>
