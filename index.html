@@ -41,8 +41,11 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		font-family: 'Roboto', sans-serif;
 	 */
 	    font-family: 'Open Sans', sans-serif;
-	   
       }
+
+	  .shadow {
+		text-shadow: 1px 1px 0 #fefeff;
+	  }
 
       tr {
         border-spacing: 2px;
@@ -439,9 +442,9 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td class="bold"><span class="right2"><span><div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></span></td>
         </tr>
         <tr style="display: none" id="trTemplate">
-          <td data-streamer="dummy" class="clickable bold" onClick="playClick(this)"></td>
-          <td data-tier="3" class="right bold"></td>
-		  <td data-races="0" class="right clickable bold" onClick="setRaces(this)">0</td>
+          <td data-streamer="dummy" class="clickable bold shadow" onClick="playClick(this)"></td>
+          <td data-tier="3" class="right bold shadow"></td>
+		  <td data-races="0" class="right clickable bold shadow" onClick="setRaces(this)">0</td>
           <td data-lp="" class="right"></td>
           <td class="right">
             <button onClick="resetTime(this)">reset time</button>
