@@ -33,7 +33,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	}
 
 	td.colTimer {
-		width: 210xp;
+		width: 210px;
 	}
 
 		a:link,
@@ -93,10 +93,15 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	    
 	  }
 
+	div.center {
+	  display: flex;
+	  justify-content: center;
+	}
+
 	  table {
         border-collapse: separate;
         border-spacing: 0 6px;
-        spacing: 3px;
+		width: 800px;
        
 	   /*
 	    font-family: 'Calibri Light', sans-serif;
@@ -536,8 +541,8 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				</div>
 			</div>
 
-    <center>
-      <table width="800px" id="tracker">
+    <div class="center">
+      <table id="tracker">
         <tr id="trHead" style="background-color: #fafafa;">
           <td class="colStreamer bold" style="font-size: 1.4em;">Streamer <button onClick="addStreamer()">+</button>
           </td>
@@ -560,7 +565,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           </td>
         </tr>
       </table>
-    </center>
+    </div>
 	
   </body>
 </html>
