@@ -276,6 +276,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       function init() {
 		
+		window.addEventListener('resize', function(event) {
+			resizeHelp(false);
+		}, true);
+		
         const params = new URLSearchParams(window.location.search);
         const streamers = params.get('streamers');
         if (streamers != null && streamers != "") {
@@ -351,7 +355,12 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	  }
 
       function setRaces(obj) {
-	  		const inpRaces = prompt("Current races:");
+	  
+			const row = obj.closest("tr");
+	  
+			const streamerName = getElementHavingAttribute(row, "TD", ATTR_DATA_STREAMER).innerHTML;
+	  
+	  		const inpRaces = prompt("Current races for streamer \"" + streamerName + "\": ");
 			var races = parseInt(inpRaces, 10);
 			if (Number.isNaN(races) || races < 0) {
 				return;
@@ -495,23 +504,27 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		helpContainer.style.display = "none";
 	  }
 	  function help() {
+	    resizeHelp(true);
+
+
 		var helpContainer = document.getElementById("helpContainer");
-		var tracker = document.getElementById("tracker");
-		const { width, top, left } = tracker.getBoundingClientRect();
-		
-		helpContainer.style.top = top + 65 + "px";
-		
-		helpContainer.style.width = width - 16 + "px";
-		
-		helpContainer.style.left = left + 8 + "px";
-
-
-		console.log("helpContainer.style.top = " + helpContainer.style.top);
-		console.log("helpContainer.style.left = " + helpContainer.style.left);
-		console.log("helpContainer.style.width = " + helpContainer.style.width);
-
 		//alert("** This thing doesn't play the game.**\n** It doesn't automatically track the game status. **\n** It just presents the information conscience and clear. **\n** Basically a workaround for the mobile MOS app issues. **\n\nClick on the streamer name to increase race count\n(hold down shift while clicking to decrease)\n\nClick on the race number to manually set the race count\n\nClick on the plus sign in the header to add a streamer\n\nKey 1-9 can be used act the same as a click on a streamer name\n(for the first 9 rows)\n\nAdd ?streamer=  and then a list of streamer names in the address to auto populate the list\n(separated by comma)");
 		helpContainer.style.display = 'block';
+	  }
+	  
+	  function resizeHelp(force) {
+		const helpContainer = document.getElementById("helpContainer");
+		if (force || helpContainer.style.display === "block") {
+			const tracker = document.getElementById("tracker");
+			const { width, top, left } = tracker.getBoundingClientRect();
+			
+			helpContainer.style.top = top + 65 + "px";
+			
+			helpContainer.style.width = width - 16 + "px";
+			
+			helpContainer.style.left = left + 8 + "px";
+		
+		}
 	  }
 	  
     </script>
