@@ -36,6 +36,10 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
 	}
 
+	.helpHead {
+		font-size: 1.4em;
+	}
+
 	div.helpLastRow {
 		 display: flex;
 		justify-content: space-between;
@@ -46,7 +50,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 			position: absolute;
 			display: none;
 	        width: 500px;
-			height: 460px;
+			height: 468px;
 			background-color: #778899;
 		
 			border-radius: 20px; 
@@ -492,7 +496,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
   <body onLoad="init()">
 			<div id="helpContainer" class="helpContainer">
 				<div class="helpContent" style="padding: 15px;">
-					<b>Hello Fellow Marble Enthusiast!</b><br><br>
+					<b class="helpHead">Hello Fellow Marble Enthusiast!</b><br><br>
 					This is just something to work around the shortcomings of the official mobile app.<br>
 					• Cluttered and hard-to-read user interface<br>
 					• Energy tiers that often stop updating<br>
@@ -502,13 +506,13 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 					• Add a streamer by clicking on the + sign. You can also provide a list of streamers in the URL (<a target="_new" href="https://deemaa87.github.io/mos-tracker/?streamers=CamWOW,OhMyGross,TheChrisLive,Zagrose,JoJoCGO,Vibblez">example</a>)<br>
 					• Click on the number of races to manually set it (the tier will be calculated)<br>
 					• Click on the streamer name to increase the race counter (hold Shift to decrease it)<br>
-					• Use keys 1-9 to increase the corresponding row index (hold Shift to decrease)<br>
+					• Use keys 1-9 to increase the race count for the corresponding row number (hold Shift to decrease)<br>
 					<br><br>
 					This tool is currently not very well tested for high DPI screens and will most likely not look very good.<br>
 					It's possible to get desynced; if a streamer cancels a race, then this tool will be ahead by one.<br><br>
 					With this in mind, I hope you find the tool helpful.<br><br>
 					<div class="helpLastRow">
-						<div>// DeafMarbler</div><div class="right clickable" onclick="hideHelp()">close</div>
+						<div>// <b>DeafMarbler</b></div><div class="right clickable" onclick="hideHelp()">close</div>
 					</div>
 					
 				</div>
