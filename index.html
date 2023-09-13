@@ -6,8 +6,9 @@ example:
 index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,ChewyIsAmongUs,TheTonyBlacks,Zagarose,BlizzardGurrl,Vibblez,Bujuxx,Cass_The_Legend,DinosaurierTV,g00mba_gg,Lottdinchen,MsDopesauce,SubMainFM,Shambugi,Thechrislive,wormmyz,TheMainDad,crazyandy86,CouchWrecked,LTDigilusion,LadyG76
 
 -->
-<html>
+<html lang="en">
   <head>
+	<title>Marble on Stream Race Tracker</title>
   <!--
     <link href="https://fonts.cdnfonts.com/css/calibri-light" rel="stylesheet">
 	-->
@@ -99,7 +100,6 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
       td {
         padding: 7px;
-        // color: #424242;
 		color: #444;
         border-bottom: 2px solid #505050;
       }
@@ -408,7 +408,6 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 	  }
 
 	  function setTableIndexes() {
-		// ATTR_DATA_TR_INDEX
 		var table = document.getElementById("tracker");
 		var rows = Array.from(table.querySelectorAll("tr"));
 		
@@ -503,7 +502,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 					<br>
 					<b>Important:</b> This tool does <b>NOT</b> play for you; it is only an aid to keep track of how many races and at what energy tier you are at.<br><br>
 					How to use:<br>
-					• Add a streamer by clicking on the + sign. You can also provide a list of streamers in the URL (<a target="_new" href="https://deemaa87.github.io/mos-tracker/?streamers=CamWOW,OhMyGross,TheChrisLive,Zagrose,JoJoCGO,Vibblez">example</a>)<br>
+					• Add a streamer by clicking on the + sign. You can also provide a list of streamers in the URL (<a target="_example" href="https://deemaa87.github.io/mos-tracker/?streamers=CamWOW,OhMyGross,TheChrisLive,Zagrose,JoJoCGO,Vibblez">example</a>)<br>
 					• Click on the number of races to manually set it (the tier will be calculated)<br>
 					• Click on the streamer name to increase the race counter (hold Shift to decrease it)<br>
 					• Use keys 1-9 to increase the race count for the corresponding row number (hold Shift to decrease)<br>
@@ -526,8 +525,8 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           <td width="35px" class="bold right" style="font-size: 1.4em;">Tier</td>
 		  <td width="55px" class="bold right" style="font-size: 1.4em;">Races</td>
           <td width="210px" class="bold right" style="font-size: 1.4em;">Play Timer</td>
-          <td class="bold"><span class="right2"><span>
-			<div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></span>
+          <td class="bold"><div class="right2">
+			<div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></div>
 		  </td>
         </tr>
         <tr style="display: none" id="trTemplate">
