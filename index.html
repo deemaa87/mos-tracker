@@ -20,12 +20,27 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		background-color: #edede8;
 	  }
 
+	td.colStreamer {
+		width: 190px;
+	}
+
+	td.colTier {
+		width: 35px;
+	}
+
+	td.colRaces {
+		width: 55px;
+	}
+
+	td.colTimer {
+		width: 210xp;
+	}
+
 		a:link,
 		a:hover,
 		a:visited,
 		a:active {
-		  color: #77ccff; /* Change this to your desired link color */
-		  /* You can also set other properties like text-decoration, if needed */
+		  color: #77ccff; 
 		  text-decoration: none;
 		  font-weight: bold;
 		}
@@ -478,15 +493,18 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		var helpContainer = document.getElementById("helpContainer");
 		var tracker = document.getElementById("tracker");
 		const { width, top, left } = tracker.getBoundingClientRect();
-
-		helpContainer.style.top = top + 65;
 		
-		helpContainer.style.width = width - 16;
+		helpContainer.style.top = top + 65 + "px";
 		
-		helpContainer.style.left = left + 8;
+		helpContainer.style.width = width - 16 + "px";
+		
+		helpContainer.style.left = left + 8 + "px";
 
-		console.log(width);
-		console.log(top);
+
+		console.log("helpContainer.style.top = " + helpContainer.style.top);
+		console.log("helpContainer.style.left = " + helpContainer.style.left);
+		console.log("helpContainer.style.width = " + helpContainer.style.width);
+
 		//alert("** This thing doesn't play the game.**\n** It doesn't automatically track the game status. **\n** It just presents the information conscience and clear. **\n** Basically a workaround for the mobile MOS app issues. **\n\nClick on the streamer name to increase race count\n(hold down shift while clicking to decrease)\n\nClick on the race number to manually set the race count\n\nClick on the plus sign in the header to add a streamer\n\nKey 1-9 can be used act the same as a click on a streamer name\n(for the first 9 rows)\n\nAdd ?streamer=  and then a list of streamer names in the address to auto populate the list\n(separated by comma)");
 		helpContainer.style.display = 'block';
 	  }
@@ -521,11 +539,11 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
     <center>
       <table width="800px" id="tracker">
         <tr id="trHead" style="background-color: #fafafa;">
-          <td width="190px" class="bold" style="font-size: 1.4em;">Streamer <button onClick="addStreamer()">+</button>
+          <td class="colStreamer bold" style="font-size: 1.4em;">Streamer <button onClick="addStreamer()">+</button>
           </td>
-          <td width="35px" class="bold right" style="font-size: 1.4em;">Tier</td>
-		  <td width="55px" class="bold right" style="font-size: 1.4em;">Races</td>
-          <td width="210px" class="bold right" style="font-size: 1.4em;">Play Timer</td>
+          <td class="colTier bold right" style="font-size: 1.4em;">Tier</td>
+		  <td class="bold right colRaces" style="font-size: 1.4em;">Races</td>
+          <td class="bold right colTimer" style="font-size: 1.4em;">Play Timer</td>
           <td class="bold"><div class="right2">
 			<div onClick="help()" class="bold help clickable" width="30px" height="30px">?</div></div>
 		  </td>
