@@ -163,6 +163,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
     <script>
       var dirtyTable = false;
 	  var shiftKey = false;
+	  var ctrlKey = false;
       const COMPLETED_ENERGY_CYCLE_BG = "background-color: #A3CFA7;"
       const ONGOING_ENERGY_CYCLE_BG = "background-color: #FFE194;"
       const ATTR_DATA_TIER = "data-tier";
@@ -304,7 +305,13 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		document.body.addEventListener("touchend", () => {
 		  document.body.style.overflow = "auto";
 		});
-						
+					
+					/*
+        window.addEventListener('load', resizeBody);
+        window.addEventListener('resize', resizeBody);
+        window.addEventListener('orientationchange', resizeBody);
+
+					*/
 		window.addEventListener('resize', function(event) {
 			resizeHelp(false);
 		}, true);
@@ -322,7 +329,8 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		
 		const onKeyUp = (event) => {
 		  shiftKey = event.shiftKey;
-		  if (event.keyCode >= 49 && event.keyCode <= 57) {
+		  ctrlKey = event.ctrlKey;
+		  if (!ctrlKey && event.keyCode >= 49 && event.keyCode <= 57) {
 		    var index = event.keyCode - 48;
 			console.log("shortcut increase pressed (1-9): " + index );
 			if (event.shiftKey) {
@@ -337,6 +345,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 
 		const onKeyDown = (event) => {
 		  shiftKey = event.shiftKey;
+		  ctrlKey = event.ctrlKey;
 		};
 
 
@@ -605,6 +614,26 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		
 		}
 	  }
+	/*  
+	  function resizeBody() {
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+			console.log("isMobileDevice = " + isMobileDevice);
+            
+            if (isMobileDevice) {
+				console.log("add transform stuff");
+                // Apply styles for mobile devices (adjust as needed)
+                const bodyElement = document.body;
+				
+				//const { width } = bodyElement.getBoundingClientRect();
+				
+				//console.log("bodyWidth: " + width);
+				
+                bodyElement.style.transform = 'scale(1.2)'; // Adjust the scaling factor if necessary
+               bodyElement.style.transformOrigin = 'center center'; // Adjust the transform origin as needed
+            }
+        }
+*/
+        // Call the function on page load and when the window is resized or the orientation changes
 	  
     </script>
   </head>
