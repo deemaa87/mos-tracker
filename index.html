@@ -233,7 +233,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				if (races < 0) {
 					races = 0;
 				}
-				setRacesByValue(obj, races);
+				setRacesByValue(obj, races, true);
 				rewriteUrl();
 			}
 			
@@ -242,7 +242,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
       }
 	  
 	  function resetRaces(obj) {
-		setRacesByValue(obj, 0);
+		setRacesByValue(obj, 0, false);
 		rewriteUrl();
 	  }
 
@@ -323,7 +323,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           for (var index = 0; index < split.length; index++) {
 		    const streamer = split[index];
 		    const nameSplit = streamer.split(":");
-            addStreamerByName(nameSplit[0], nameSplit.length == 2 ? nameSplit[1] : 0);
+            addStreamerByName(nameSplit[0], nameSplit.length == 2 ? nameSplit[1] : 0, false);
           }
         }
 		
@@ -361,7 +361,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 		rewriteUrl();
       }
 
-	  function setRacesByValue(obj, races) {
+	  function setRacesByValue(obj, races, setLPTimer) {
 		var row = obj.closest("tr");
 		if (row != null) {
 			var element = getElementHavingAttribute(row, "TD", ATTR_DATA_RACES);
@@ -375,7 +375,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				
 				var timerElement = getElementHavingAttribute(row, "TD", ATTR_DATA_LP);
 				
-				if (races == 0) {
+				if (races == 0 || !setLPTimer) {
 					timerElement.setAttribute(ATTR_DATA_LP, "0");
 					timerElement.innerHTML = "";
 				} else {
@@ -404,18 +404,18 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
 				return;
 			}
 			
-			setRacesByValue(obj, races);
+			setRacesByValue(obj, races, true);
 			rewriteUrl();
 
 	  }
 
       function addStreamer() {
         const name = prompt('Streamer Name:');
-        addStreamerByName(name, 0);
+        addStreamerByName(name, 0, false);
 		rewriteUrl();
       }
 
-      function addStreamerByName(name, races) {
+      function addStreamerByName(name, races, setLPTimer) {
         if (name != "" && name != null) {
           var trRow = document.getElementById("trTemplate");
           var row = trRow.cloneNode(true);
@@ -429,7 +429,7 @@ index.html?streamers=JojoCGo,CamWOW,OhMyGross,oooJenJenooo,Deadfighter84_TV,Chew
           var table = document.getElementById("tracker");
           table.appendChild(row);
 		  if (races > 0) {
-			setRacesByValue(row, races);
+			setRacesByValue(row, races, setLPTimer);
 		  }
           dirtyTable = true;
         }
